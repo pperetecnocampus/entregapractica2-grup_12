@@ -57,7 +57,7 @@ class ZombiTest {
         assertTrue(zombi.getEstat() instanceof Destruit);
         assertEquals(0, zombi.getVida());
         
-        // Verificar que no pot fer accions
+        // Verificar que no pot fer actions
         assertThrows(RuntimeException.class, () -> {
             zombi.update(5);
         });
