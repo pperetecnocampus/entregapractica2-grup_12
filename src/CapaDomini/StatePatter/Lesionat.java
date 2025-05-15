@@ -1,20 +1,22 @@
 package CapaDomini.StatePatter;
 
 import CapaDomini.Zombi;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Lesionat implements IEstatZombi {
     private static final Lesionat instance = new Lesionat();
-    private int cicles = 0;
-    
+    private Map<Zombi, Integer> ciclesMap = new HashMap<>();
+
     private Lesionat() {}
-    
+
     public static Lesionat getInstance() {
         return instance;
     }
-    
+
     @Override
     public void canviarEstat(Zombi zombi, IEstatZombi nouEstat) {
-        cicles = 0; // Reinicia el comptador
+        ciclesMap.remove(zombi); // Eliminar el comptador quan canvia d'estat
         zombi.setEstat(nouEstat);
     }
 
@@ -27,18 +29,23 @@ public class Lesionat implements IEstatZombi {
     public void rebreDany(Zombi zombi, int dany) {
         int vidaActual = zombi.getVida() - dany;
         zombi.setVida(vidaActual);
-        
+
         if (vidaActual <= 0) {
             canviarEstat(zombi, Destruit.getInstance());
         }
         // Si ja està lesionat, no canvia d'estat
     }
-    
+
     @Override
     public void actualitzar(Zombi zombi) {
-        cicles++;
-        if (cicles >= 3) {
+        // Obtenir el comptador de cicles actual per aquest zombi, o 0 si no existeix
+        int ciclesActuals = ciclesMap.getOrDefault(zombi, 0);
+        ciclesActuals++;
+
+        if (ciclesActuals >= 3) {
             canviarEstat(zombi, Inactiu.getInstance());
+        } else {
+            ciclesMap.put(zombi, ciclesActuals); // Actualitzar el comptador
         }
     }
 }

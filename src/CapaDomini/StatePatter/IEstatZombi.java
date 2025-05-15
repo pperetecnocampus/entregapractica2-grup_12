@@ -1,4 +1,5 @@
 package CapaDomini.StatePatter;
+import CapaDomini.Zombi;
 
 public interface IEstatZombi {
     void canviarEstat(Zombi zombi, IEstatZombi nouEstat);
